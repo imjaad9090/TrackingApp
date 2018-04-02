@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "737120465550",
+    "firebase_url": "https://trackingapp-2fd66.firebaseio.com",
+    "project_id": "trackingapp-2fd66",
+    "storage_bucket": "trackingapp-2fd66.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:737120465550:android:e0e527c50ef6ca71",
+        "android_client_info": {
+          "package_name": "com.mytracking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "737120465550-pqb206vsej5gn683nnajhc1s95tkq5vg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlfK7-HI7bbco3e1DBIRNlkdP_pHsrf2k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
