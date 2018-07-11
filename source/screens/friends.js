@@ -5,15 +5,17 @@ import MultiSelect from 'react-native-multiple-select';
 import SelectMultiple from 'react-native-select-multiple'
 import Modal from "react-native-modal";
 import Icon from 'react-native-vector-icons/FontAwesome'
-import store from 'react-native-simple-store';
 import Communications from 'react-native-communications';
 const MESSAGE = 'Welcome to MyLocation App'
 // create a component
 class friends extends Component {
+   
     static navigationOptions ={
         drawerLockMode: 'locked-closed',
-        
-        title:'Friends'
+        title:'Friends',
+        headerTitleStyle:{
+            fontWeight:'400'
+        }
     }
     
     state = { selectedFruits:[],ben:[], isModalVisible: false}
@@ -28,9 +30,11 @@ this.setState({ isModalVisible: !this.state.isModalVisible });
       }
       
 
-all(){
-    console.log(this.state.selectedFruits)
-}
+    all(){
+    
+        console.log(this.state.selectedFruits)
+    
+    }
 
 async contacts(){
     var asyncstore = await AsyncStorage.getItem('friends')

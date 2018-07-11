@@ -5,20 +5,22 @@ import Icon from 'react-native-vector-icons/Feather';
 import { Container, Header, Content, Card, CardItem, Thumbnail, Left, Body, Right } from 'native-base';
 import IconBadge from 'react-native-icon-badge';
 import Contacts from 'react-native-contacts';
-import DeviceInfo from 'react-native-device-info';
-
-import FCM, { FCMEvent } from "react-native-fcm";
+import Ripple from 'react-native-material-ripple';
+import FCM, {presentLocalNotification} from "react-native-fcm";
+import {FCMEvent} from 'react-native-fcm';
 // create a component
 class home extends Component {
     static navigationOptions =({navigation})=> ({
-        title:'Friends App',
+        title:'Custodian',
+        headerMode:'float',
+        headerTransitionPreset:'cardStyle',
         headerStyle:{
-            elevation:0,
+            //elevation:0,
         backgroundColor: 'white',
- padding:10
+        padding:10
 
         },
-        headerTitleStyle: { textAlign:"center",alignSelf:"center"},
+        headerTitleStyle: { textAlign:"center",alignSelf:"center",fontWeight:'400'},
         headerLeft: (
         <View><Icon name="menu" size={26} color="#0F3057" onPress={()=>navigation.navigate('DrawerOpen')}/></View>
 
@@ -40,6 +42,20 @@ constructor(){
 }
     
  componentWillMount(){
+    FCM.on(FCMEvent.Notification, async (notif) => {
+        console.log(notif);
+        
+        FCM.presentLocalNotification({
+          vibrate: 300,
+          title:notif.fcm.body,
+          body: 'Test Notification',
+          big_text: 'i am large',
+          priority: "high",
+          large_icon: "ic_notif",
+          show_in_foreground: true,
+        });
+    
+      });
     
        
     //this.timer = setInterval(()=> this.getfamcount(), 1000)
@@ -113,19 +129,19 @@ async getclosecount(){
     }
 
    async componentDidMount(){
-
+    //StatusBar.setHidden(true);
     FCM.getFCMToken().then(function(token){
-        AsyncStorage.setItem('myToken',token)
-        console.log('token stored')
+        
+        AsyncStorage.setItem('myToken',token)                       
+        console.log('token stored,and its : '+ token)
 
     });
 
 
-    StatusBar.setHidden(true);
-    const uniqueId = DeviceInfo.getUniqueID();
+    {/*const uniqueId = DeviceInfo.getUniqueID();
     //console.log(uniqueId)
     await AsyncStorage.setItem('DeviceID',uniqueId) 
-    console.log('successfuly stored device id')      
+    console.log('successfuly stored device id')*/}      
         Contacts.getAll((err, contacts) => {
             if(err === 'denied'){
               // error
@@ -145,19 +161,39 @@ async getclosecount(){
     console.log('logged out')
     }
     
+    getnotif(){
+        
+             /* Create local notification for showing in a foreground */
+                FCM.presentLocalNotification({
+                   body: "this is body of ",
+                   priority: "high",
+                   title: "this sis some title",
+                   sound: "default", 
+                   "large_icon": "ic_notif",// Android only
+                   icon: "ic_notif",
+                   "show_in_foreground" :true, /* notification when app is in foreground (local & remote)*/
+                   vibrate: 200, /* Android only default: 300, no vibration if you pass null*/
+                   "lights": true, // Android only, LED blinking (default false)
+               });
+           
+    }
+
+
     render() {
         return (
 
         <View style={styles.container}>
-        
-         <TouchableOpacity style={{backgroundColor:'white',shadowOffset: { width: 10, height: 10 },
-          shadowOpacity: 1,
-          shadowRadius: 5,shadowColor:'#000'}} onPress={()=>this.props.navigation.navigate('Family')}>
+        <StatusBar
+        backgroundColor="#fcfcfc"
+        barStyle="dark-content"
+            />
+         <TouchableOpacity activeOpacity={1.0} style={{backgroundColor:'white',elevation:3,shadowOpacity:0.6}}>
+         <Ripple rippleOpacity={0.1} rippleSize={255} rippleSequential={true} onPress={()=>this.props.navigation.navigate('Family')}>
 
             <IconBadge
           MainElement={
         
-          <View style={{flexDirection:'row',height:140,padding:5,alignItems:'center',borderColor:'rgba(0,0,0,0.1)',borderWidth:2,}}><Image style={{left:5,width:50,height:50,resizeMode:'contain'}}
+          <View style={{flexDirection:'row',height:140,padding:5,alignItems:'center',borderColor:'rgba(0,0,0,0.1)',borderWidth:0,}}><Image style={{left:5,width:50,height:50,resizeMode:'contain'}}
              source={require('./images/family.png')}/>
             <View style={{marginHorizontal:10,width:'80%'}}>
               <Text>My Family</Text>
@@ -167,7 +203,7 @@ async getclosecount(){
 
     }
     BadgeElement={
-      <Text style={{color:'#eee',fontSize:15,fontWeight:"700"}}>{this.state.famcount}</Text>
+      <Text style={{color:'#eee',fontSize:16,fontWeight:"700"}}>{this.state.famcount}</Text>
     }
     IconBadgeStyle={
       {   
@@ -177,17 +213,17 @@ async getclosecount(){
     }
     Hidden={this.state.famcount==0}
     />
-
+</Ripple>
 </TouchableOpacity>
 
 
+<TouchableOpacity activeOpacity={1.0} style={{backgroundColor:'white',elevation:3,shadowOpacity:0.6}} >
 
-<TouchableOpacity  style={{backgroundColor:'white'}} onPress={()=>this.props.navigation.navigate('Close')}>
-
+<Ripple rippleOpacity={0.1} rippleSize={255} rippleSequential={true} onPress={()=>this.props.navigation.navigate('Close')}>
 
             <IconBadge
     MainElement={
-        <View style={{flexDirection:'row',height:140,padding:5,alignItems:'center',borderColor:'rgba(0,0,0,0.1)',borderWidth:2,}}><Image style={{left:5,width:50,height:50,resizeMode:'contain'}}
+        <View style={{flexDirection:'row',height:140,padding:5,alignItems:'center',borderColor:'rgba(0,0,0,0.1)',borderWidth:0,}}><Image style={{left:5,width:50,height:50,resizeMode:'contain'}}
         source={require('./images/teamwork.png')}/>
        <View style={{marginHorizontal:10,width:'80%'}}>
          <Text>Close Friends</Text>
@@ -196,7 +232,7 @@ async getclosecount(){
     </View>
     }
     BadgeElement={
-      <Text style={{color:'#eee',fontSize:15,fontWeight:"700"}}>{this.state.fricount}</Text>
+      <Text style={{color:'#eee',fontSize:16,fontWeight:"700"}}>{this.state.fricount}</Text>
     }
     IconBadgeStyle={
       {
@@ -206,15 +242,19 @@ async getclosecount(){
     }
     Hidden={this.state.fricount==0}
     />
+    </Ripple>
+
 
 </TouchableOpacity>
 
 
+<TouchableOpacity  activeOpacity={1.0} style={{backgroundColor:'white',elevation:3,shadowOpacity:0.6}} >
+           
+<Ripple rippleOpacity={0.1} rippleSize={255} rippleSequential={true} onPress={()=>this.props.navigation.navigate('Friends')}>
 
-<TouchableOpacity style={{backgroundColor:'white'}} onPress={()=>this.props.navigation.navigate('Friends')}>
             <IconBadge
     MainElement={
-        <View style={{flexDirection:'row',height:140,padding:5,alignItems:'center',borderColor:'rgba(0,0,0,0.1)',borderWidth:2,}}><Image style={{left:5,width:50,height:50,resizeMode:'contain'}}
+        <View style={{flexDirection:'row',height:140,padding:5,alignItems:'center',borderColor:'rgba(0,0,0,0.1)',borderWidth:0,}}><Image style={{left:5,width:50,height:50,resizeMode:'contain'}}
         source={require('./images/friends.png')}/>
        <View style={{marginHorizontal:10,width:'80%'}}>
          <Text>My Friends</Text>
@@ -223,7 +263,7 @@ async getclosecount(){
     </View>
     }
     BadgeElement={
-      <Text style={{color:'#eee',fontSize:15,fontWeight:"700"}}>{this.state.common}</Text>
+      <Text style={{color:'#eee',fontSize:16,fontWeight:"700"}}>{this.state.common}</Text>
     }
     IconBadgeStyle={
       {
@@ -233,8 +273,9 @@ async getclosecount(){
     }
     Hidden={this.state.common==0}
     />
-
+</Ripple>
 </TouchableOpacity>
+<Button title="get notification" onPress={()=>this.getnotif()} />
 
 </View>        
 

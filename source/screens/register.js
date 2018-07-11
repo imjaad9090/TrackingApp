@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { View,Text,Keyboard,TouchableWithoutFeedback,StyleSheet,ScrollView,Button,TouchableOpacity,KeyboardAvoidingView,TextInput,Image,ImageBackground,StatusBar,Alert,AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
 import axios from 'react-native-axios';
-import FusedLocation from 'react-native-fused-location';
+//import FusedLocation from 'react-native-fused-location';
 // create a component
 class register extends React.Component {
     static navigationOptions = {
@@ -25,14 +25,14 @@ class register extends React.Component {
 
     async componentWillMount(){
         Alert.alert('We need current location','Please turn on location services i.e GPS')
-        FusedLocation.setLocationPriority(FusedLocation.Constants.HIGH_ACCURACY);
+       {/* FusedLocation.setLocationPriority(FusedLocation.Constants.HIGH_ACCURACY);
  
     // Get location once.
     const location = await FusedLocation.getFusedLocation();
     const latitude = JSON.stringify(location.latitude)
-    const longitude = JSON.stringify(location.longitude)
+       const longitude = JSON.stringify(location.longitude)*/}
 
-    this.setState({address:{latitude,longitude}})
+    this.setState({address:"Nothing"})
     console.log(this.state.address)
     }
         

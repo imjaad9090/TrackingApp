@@ -5,14 +5,16 @@ import MultiSelect from 'react-native-multiple-select';
 import SelectMultiple from 'react-native-select-multiple'
 import Modal from "react-native-modal";
 import Icon from 'react-native-vector-icons/FontAwesome'
-import store from 'react-native-simple-store';
 import Communications from 'react-native-communications';
 const MESSAGE = 'Welcome to MyLocation App'
-// create a component
+// create a componentww
 class closefriends extends Component {
     static navigationOptions ={
         drawerLockMode: 'locked-closed',
-        title:'Close Friends'
+        title:'Close Friends',
+        headerTitleStyle:{
+            fontWeight:'400'
+        }
     }
     
     state = { selectedFruits:[],ben:[], isModalVisible: false}

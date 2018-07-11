@@ -23,8 +23,11 @@ import profile from './screens/profile';
 import sidebar from './screens/sidebar';
 import locations from './screens/locations';
 import login from './screens/login';
+import web from './screens/web';
+
 import register from './screens/register';
 import maptest from './screens/maptest';
+import { fadeIn } from 'react-navigation-transitions';
 
 
 
@@ -38,8 +41,10 @@ import maptest from './screens/maptest';
   Locations : {screen : locations},
   Side : {screen : sidebar},
   Map : {screen : maptest},
+  Web : {screen :web}
 
-},{
+},{    transitionConfig: () => fadeIn(400),
+
   initialRouteName:'Home'
 })
 
@@ -48,11 +53,8 @@ import maptest from './screens/maptest';
   Main : 
   {
       screen : Stack1,
-  navigationOptions : {
-      drawer:  {
-          label : 'Main'
-      }
-  }
+  
+  
 }
 },{
   contentComponent:sidebar
@@ -67,7 +69,8 @@ const Go = StackNavigator({
  const AuthStack = StackNavigator({
   Login : {screen : login},
   Register : {screen : register},
-})
+  
+  })
 
 
 const App = SwitchNavigator(
@@ -77,7 +80,7 @@ const App = SwitchNavigator(
     Auth: AuthStack,
   },
   {
-    initialRouteName: 'AuthLoading',
+    initialRouteName: 'App',
   }
 );
 

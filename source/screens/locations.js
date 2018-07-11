@@ -1,10 +1,10 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,FlatList,AsyncStorage,Alert,Button,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet,FlatList,AsyncStorage,Alert,Button,TouchableOpacity,ScrollView } from 'react-native';
 import FAB from 'react-native-fab'
 import MapView, { AnimatedRegion,Circle, Animated,Marker } from 'react-native-maps';
 import st from './json/st';
-import FusedLocation from 'react-native-fused-location';
+//import FusedLocation from 'react-native-fused-location';
 import Carousel from 'react-native-carousel';
 import circleToPolygon from 'circle-to-polygon';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -18,8 +18,11 @@ class locations extends Component {
 
 static navigationOptions = {
     title:"Locations",
-    
-    
+    drawerLockMode: 'locked-closed',
+    headerTitleStyle:{
+        fontWeight:'400'
+    }
+
 }
 
 constructor(){
@@ -43,19 +46,32 @@ constructor(){
     },
 
 
-        region:{
+        region : {
             latitude:31.497420,
             longitude:74.360123,
             latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
+            longitudeDelta: 0.0421,
         }
     }
 }
 
-_showDialog = () => this.setState({ visble: true });
+  _showDialog = () => this.setState({ visble: true });
   _hideDialog = () => this.setState({ visble: false });
 
 componentDidMount(){
+
+    navigator.geolocation.getCurrentPosition(
+          
+        (position) => {
+
+            console.log(position)
+
+        },
+          (error) => console.log(error.message),
+         {enableHighAccuracy: false, timeout: 20000, accuracy:1000, maximumAge:20000}  
+       
+    );
+
     let point ={
         lat : this.state.coords.latitude,
         lng : this.state.coords.longitude
@@ -63,7 +79,7 @@ componentDidMount(){
 
     const coordinates = [point.lat, point.lng]; //[lon, lat]
     const radius = 1000;                           
-const numberOfEdges = 50;  
+    const numberOfEdges = 50;  
 
 let wholearea = circleToPolygon(coordinates, radius, numberOfEdges);
 let finalarea = wholearea.coordinates[0]
@@ -101,6 +117,25 @@ for(var i = 0; i < finalarea.length; i++){
 
 
 async componentWillMount(){
+
+    /*FusedLocation.setLocationPriority(FusedLocation.Constants.HIGH_ACCURACY);
+ 
+    // Get location once.
+    const location = await FusedLocation.getFusedLocation();
+    console.log(location)
+    this.setState({region:{
+        latitude:location.latitude,
+        longitude:location.longitude,
+        latitudeDelta:0.0400,
+        longitudeDelta:0.0400
+    }})
+    this.setState({coords:{
+        latitude:location.latitude,
+        longitude:location.longitude
+    }})*/
+
+
+
     this.setState({isVisible:true})
     var email =await AsyncStorage.getItem('email')
     var thisemail = JSON.parse(email)
@@ -179,21 +214,7 @@ if (insiders.length>0) {
   });
     
 
-    FusedLocation.setLocationPriority(FusedLocation.Constants.HIGH_ACCURACY);
- 
-    // Get location once.
-    const location = await FusedLocation.getFusedLocation();
-    console.log(location)
-    this.setState({region:{
-        latitude:location.latitude,
-        longitude:location.longitude,
-        latitudeDelta:0.0400,
-        longitudeDelta:0.0400
-    }})
-    this.setState({coords:{
-        latitude:location.latitude,
-        longitude:location.longitude
-    }})
+    
 }
 
 
@@ -207,19 +228,10 @@ array[objIndex].notified = true
 this.setState({data:array})
 
     console.log(this.state.data)
-    this.setState(prevState => ({index: prevState.index + 1})); 
-
+    this.setState(prevState => ({index: prevState.index + 1}));
     console.log(array)
     console.log(props)
-
-
 }
-
-
-
-
-
-
 
 
     render() {
@@ -263,39 +275,50 @@ overlayOpacity={0.0}
     dialogStyle={{backgroundColor:'#edf2f4'}}
     //dialogAnimation={this.popupAnimation}
 >
+<View style={{flexDirection:'column'}}>
     <View style={{top:10}}>
       <Text style={{alignSelf:'center'}}>Would you like to send them notification now</Text>
             <Text style={{alignSelf:'center'}}>We found {this.state.count} near you..</Text>
           
-          <View style={{margin:5,top:10}}>
+          <View style={{top:10,alignItems:'center'}}>
           <FlatList
                 showsHorizontalScrollIndicator={false}
                 extraData={this.state.index}
-                horizontal={true}
+            horizontal={true}
             keyExtractor={(item, index) => index.toString()}
             data={this.state.data}
             renderItem={({item}) => (
-                <TouchableOpacity activeOpacity={0.9} onPress={()=>this.sendNotification(item.id)}>
-                <View style={{borderRadius:3,width:80,height:80,backgroundColor:'#09964e',marginLeft:5,marginRight:5,alignItems:'center',justifyContent:'center'}}>
+                <TouchableOpacity activeOpacity={0.9} onPress={()=>this.sendNotification(item.id)} style={{alignItems:'center'}}>
+                <View style={{borderRadius:2,width:120,height:80,backgroundColor:'#0E79B2',alignItems:'center',marginHorizontal:4,justifyContent:'center'}}>
                 <Text style={{color:'white'}}>{item.name}</Text>
             
 
-            <Icon name="check" color={item.notified ? 'hotpink' : 'gray'}  size={25}/>
+            <Icon name="check" color={item.notified ? '#00E640' : '#fff'}  size={22}/>
 
             </View>
             </TouchableOpacity>
 
       )}/>
        </View>  
-       <Button style={{top:10}} backgroundColor="#ee0" title="Done" onPress={()=>this.popupDialog.dismiss()}/>
+       
+       
+
+
 
     </View>
+
+    
+    <TouchableOpacity activeOpacity={0.8} onPress={()=>this.popupDialog.dismiss()} style={{top:30,backgroundColor:'#2ECC71',alignSelf:'center',borderRadius:5,width:'75%',height:45,alignItems:'center',justifyContent:'center'}}>
+                <Text style={{fontWeight:"700",fontSize:16,color:'#eee'}}>Done</Text>
+            </TouchableOpacity>
+            
+            </View>
   </PopupDialog>
 
 </View>
 
 
-<View style={{alignSelf:'center',top:5}}>
+<View style={{alignSelf:'center',top:5,marginHorizontal:10}}>
  <Spinner  isVisible={this.state.isVisible} size={40} type={'Wave'} color="#d63031"/>
  </View>
            </View>   

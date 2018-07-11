@@ -6,12 +6,14 @@ import Communications from 'react-native-communications';
 const MESSAGE = 'Welcome to MyLocation App'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Modal from "react-native-modal";
-import store from 'react-native-simple-store';
 // create a component
 class family extends Component {
     static navigationOptions ={
         drawerLockMode: 'locked-closed',
-        title:'Family'
+        title:'Family',
+        headerTitleStyle:{
+            fontWeight:'400'
+        }
     }
     
     state = { selectedFruits:[],ben:[], isModalVisible: false}

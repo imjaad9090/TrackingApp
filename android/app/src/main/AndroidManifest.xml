@@ -16,6 +16,8 @@
   <uses-permission android:name="android.permission.READ_CONTACTS" />
 <uses-permission android:name="android.permission.READ_PROFILE" />
   <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+  <uses-feature android:name="android.hardware.location.gps" />
+    <uses-feature android:name="android.hardware.location.network" />
 
 
     <permission
@@ -42,6 +44,20 @@
       android:value="AIzaSyBFrgueE02yf3Fh4UHuYzxnaX5LabsNAFg"/>
 
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notif"/>
+
+  <receiver android:name="com.evollu.react.fcm.FIRLocalMessagingPublisher"/>
+      <receiver android:enabled="true" android:exported="true"  android:name="com.evollu.react.fcm.FIRSystemBootEventReceiver">
+          <intent-filter>
+              <action android:name="android.intent.action.BOOT_COMPLETED"/>
+              <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+              <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+              <category android:name="android.intent.category.DEFAULT" />
+          </intent-filter>
+      </receiver>
+
+
+
+
 
    <service android:name="com.evollu.react.fcm.MessagingService" android:enabled="true" android:exported="true">
      <intent-filter>

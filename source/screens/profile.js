@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import {View, StyleSheet,ScrollView,Image,Text ,AsyncStorage,TouchableOpacity,ActivityIndicator} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather'
 import { Container, Header, Content, List,Button, Separator,ListItem,H3,H2,Left, Body, Right, Switch } from 'native-base';
-const GOOGLE_MAPS_APIKEY = 'AIzaSyBFrgueE02yf3Fh4UHuYzxnaX5LabsNAFg';
+const GOOGLE_MAPS_APIKEY = 'AIzaSyBzyI8GzavsFfFoxopFLCAApWM2VKRXNeo';
 import axios from 'react-native-axios';
-import FusedLocation from 'react-native-fused-location';
+//import FusedLocation from 'react-native-fused-location';
 import ImagePicker from 'react-native-image-crop-picker';
 import Spinner from 'react-native-spinkit';
 // create a component
@@ -17,6 +17,9 @@ class profile extends Component {
         headerStyle:{
             elevation:0,
     
+        },
+        headerTitleStyle:{
+            fontWeight:'400'
         }
         
     }
@@ -44,14 +47,10 @@ class profile extends Component {
     var id = await AsyncStorage.getItem('thisUserId')
 
        console.log('on mount')
-       FusedLocation.setLocationPriority(FusedLocation.Constants.HIGH_ACCURACY);
- 
-       // Get location once.
-       const location = await FusedLocation.getFusedLocation();
-       console.log(location)
+       
      
 
-        axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + location.latitude + ',' + location.longitude + '&key=' + GOOGLE_MAPS_APIKEY) // be sure your api key is correct and has access to the geocode api
+        {/*axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + location.latitude + ',' + location.longitude + '&key=' + GOOGLE_MAPS_APIKEY) // be sure your api key is correct and has access to the geocode api
         .then(response => {
         console.log(response);
         var str=response.data.results[2].formatted_address
@@ -63,7 +62,7 @@ class profile extends Component {
        }).catch((error) => { // catch is called after then
         console.log(error)
          this.setState({ address: 'Cant calculate current address.' })
-       });  
+       }); */} 
        
        axios.post('https://dev99.net/tracking/index.php/api/get_profile', {
         user_id: id
@@ -131,7 +130,7 @@ class profile extends Component {
             
               <Text style={{fontWeight:'bold'}}>Location :   </Text>
               
-                <Text>{this.state.address}</Text>
+                <Text>Amsterdam, Netherlands</Text>
               
             </ListItem>
 
