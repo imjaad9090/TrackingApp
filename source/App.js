@@ -80,7 +80,7 @@ const App = SwitchNavigator(
     Auth: AuthStack,
   },
   {
-    initialRouteName: 'App',
+    initialRouteName: 'AuthLoading',
   }
 );
 

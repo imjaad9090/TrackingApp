@@ -3,6 +3,9 @@ package com.mytracking;
 import android.app.Application;
 //import com.surialabs.rn.geofencing.GeoFencingPackage;
 import com.facebook.react.ReactApplication;
+import net.zubricky.AndroidKeyboardAdjust.AndroidKeyboardAdjustPackage;
+import com.jamesisaac.rnbackgroundtask.BackgroundTaskPackage;
+import com.mustansirzia.fused.FusedLocationPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 //import com.learnium.RNDeviceInfo.RNDeviceInfo;
 //import com.surialabs.rn.geofencing.GeoFencingPackage;
@@ -38,6 +41,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new AndroidKeyboardAdjustPackage(),
+            new BackgroundTaskPackage(),
+            new FusedLocationPackage(),
             new PickerPackage(),
             new RNSpinkitPackage(),
             new ReactNativeContacts(),
@@ -69,5 +75,7 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    BackgroundTaskPackage.useContext(this);
+
   }
 }

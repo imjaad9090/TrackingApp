@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import { View,Text,Keyboard,TouchableWithoutFeedback,StyleSheet,ScrollView,Button,TouchableOpacity,KeyboardAvoidingView,TextInput,Image,ImageBackground,StatusBar,Alert,AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
 import axios from 'react-native-axios';
-//import FusedLocation from 'react-native-fused-location';
+import firebase from 'react-native-firebase';
+import FusedLocation from 'react-native-fused-location';
 // create a component
 class register extends React.Component {
     static navigationOptions = {
@@ -18,50 +19,88 @@ class register extends React.Component {
             email:'',
             password:'',
             username:'',
-            phone:'',
-            address:''
+            
         }
     }
 
     async componentWillMount(){
         Alert.alert('We need current location','Please turn on location services i.e GPS')
-       {/* FusedLocation.setLocationPriority(FusedLocation.Constants.HIGH_ACCURACY);
+       FusedLocation.setLocationPriority(FusedLocation.Constants.HIGH_ACCURACY);
  
     // Get location once.
     const location = await FusedLocation.getFusedLocation();
-    const latitude = JSON.stringify(location.latitude)
-       const longitude = JSON.stringify(location.longitude)*/}
-
-    this.setState({address:"Nothing"})
-    console.log(this.state.address)
+    this.setState({latitude:(location.latitude),longitude:(location.longitude)})
+        console.log(this.state)
+    
     }
         
  
-        register(){
-            const { navigate } = this.props.navigation;
+    register(){
+        const { navigate,pop } = this.props.navigation;
 
-            axios.post('https://dev99.net/tracking/index.php/api/register',{
-                name: this.state.username,
-                email: this.state.email,
-                password: this.state.password,
-                address : JSON.stringify(this.state.address),
-                phone: this.state.phone
-              })
-              .then( async function (response) {
-                console.log(response);
-                await AsyncStorage.setItem('userToken', 'LoggedIn');
-                navigate('App');
-                alert('Registered Successfuly')
+        var db = firebase.database().ref();
 
-              })
-              .catch(function (error) {
-                console.log(error);
-                alert('Something went wrong, try again..Make sure the GPS is enabled')
-              });
+        const { email, password,username } = this.state;
 
 
+        if(email != '' && password.length >=6 && username != '')
+        {
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(() => {
+            var user = firebase.auth().currentUser;
+            var CustID =  'C'+Math.floor((Math.random() * 1000000000) + 100)
+             AsyncStorage.setItem('MyID', CustID);
+        console.log('successfuly created new child')
+firebase.database().ref().child('Flocks').child(CustID).set({
+    email: email,
+    watching: 0,
+    userid: user.uid,
+    custodianID: CustID,
+    name: username,
+    image:"https://firebasestorage.googleapis.com/v0/b/trackingapp-2fd66.appspot.com/o/sheep.png?alt=media&token=6af127ed-5344-46fa-b6e2-d5816c453731",
+    online: false,
+    location:{latitude:this.state.latitude,longitude:this.state.longitude},
+    watchlist:0
+}).then(async function() {
 
-        }
+    var user = firebase.auth().currentUser;
+    firebase.database().ref().child('Unique_Ids/'+user.uid).set({
+        custid:CustID
+    })
+
+    await AsyncStorage.setItem('userToken', 'LoggedIn');
+    navigate('App');
+})
+        {/*db.child('Users').push({
+            email: this.state.email,
+            uid: user.uid,
+            name: this.state.username,
+            role: this.state.role
+        })
+        db.child('Profile').push({
+            email: this.state.email,
+            uid: user.uid,
+            name: this.state.username,
+            role: this.state.role,
+            image:" "
+        })*/}
+
+
+
+          
+ }).catch(function(error) {
+
+    var showErr = JSON.stringify(error.message)
+    Alert.alert('Ohh Snapp..',showErr)
+
+});
+
+}
+else {
+    alert('One of the fields are empty or password is less than 6 characters')
+}
+        
+    }
      componentDidMount(){
         //StatusBar.setHidden(true);
 
@@ -81,7 +120,7 @@ class register extends React.Component {
                 onChangeText={(username) => this.setState({username})}
                 multiline={false}
                 placeholder="Username"
-                autoCapitalize="none"
+                autoCapitalize="words"
                 autoCorrect={false}
                 returnKeyType="next"
                 onSubmitEditing={(event) => { 
@@ -107,26 +146,6 @@ class register extends React.Component {
                 autoCorrect={false}
                 returnKeyType="next"
                 onSubmitEditing={(event) => { 
-                    this.refs.man.focus(); 
-                  }}
-                underlineColorAndroid="transparent"
-                placeholderTextColor="#bdc3c7"
-
-              />
-
-
-                  <TextInput
-                style={styles.input}
-                selectionColor={'#3d1767'}
-                ref="man"
-                onChangeText={(phone) => this.setState({phone})}
-                multiline={false}
-                placeholder="Phone"
-                autoCapitalize="none"
-                keyboardType="numeric"
-                autoCorrect={false}
-                returnKeyType="next"
-                onSubmitEditing={(event) => { 
                     this.refs.SecondInput.focus(); 
                   }}
                 underlineColorAndroid="transparent"
@@ -134,6 +153,8 @@ class register extends React.Component {
 
               />
 
+
+                  
 
               <TextInput
         style={styles.input}
@@ -198,3 +219,39 @@ const styles = StyleSheet.create({
 
 //make this component available to the app
 export default register;
+
+
+/*
+
+axios.post('https://dev99.net/tracking/index.php/api/register',{
+                name: this.state.username,
+                email: this.state.email,
+                password: this.state.password,
+                address : JSON.stringify(this.state.address),
+                phone: this.state.phone
+              })
+              .then( async function (response) {
+                console.log(response);
+                await AsyncStorage.setItem('userToken', 'LoggedIn');
+                navigate('App');
+                alert('Registered Successfuly')
+
+              })
+              .catch(function (error) {
+                console.log(error);
+                alert('Something went wrong, try again..Make sure the GPS is enabled')
+              });
+*/
+
+/*
+var user = firebase.auth().currentUser;
+
+user.sendEmailVerification().then(async function() {
+    console.log('email has been sent')
+    await AsyncStorage.setItem('userToken', 'LoggedIn');
+    Alert.alert('Verify Email','A verification email has been sent to your inbox, please verify yourself and log in.')
+    //navigate('App');
+    pop()
+      })
+console.log(user)
+*/

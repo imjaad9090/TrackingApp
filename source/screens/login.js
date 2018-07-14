@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { View,Text,Keyboard,TouchableWithoutFeedback,AsyncStorage,StyleSheet,ScrollView,Button,TouchableOpacity,KeyboardAvoidingView,TextInput,Image,ImageBackground,StatusBar,Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import axios from 'react-native-axios';
+import firebase from 'react-native-firebase';
+
 // create a component
 class login extends React.Component {
     static navigationOptions = {
@@ -20,8 +22,8 @@ class login extends React.Component {
         
         register(){
             const { navigate } = this.props.navigation;
-
-            axios.post('https://dev99.net/tracking/index.php/api/login', {
+            const{email,password}=this.state
+           {/* axios.post('https://dev99.net/tracking/index.php/api/login', {
                 email: this.state.email,
                 password: this.state.password,
                 
@@ -45,6 +47,41 @@ class login extends React.Component {
                 console.log(error);
                 alert('Something went wrong, please try again..')
               });
+            */}
+
+            firebase.auth().signInWithEmailAndPassword(email, password).then(async function() {
+                
+                firebase.auth().onAuthStateChanged( user => {
+                    if(user){
+                      console.log(user)
+                   var database = firebase.database();
+                   database.ref('Unique_Ids/'+user.uid).on('value',(snap) => {
+
+                    console.log('from login -->' + snap.val().custid)
+                    AsyncStorage.setItem('MyID', (snap.val().custid));
+                    alert('success!')
+                     AsyncStorage.setItem('userToken', 'LoggedIn');
+    
+                    navigate('App');
+                 
+            
+                });
+            }
+        })                
+                
+                
+                
+                   })
+                   .catch(function(error){
+
+                  var errorCode = error.code;
+                  var errorMessage = JSON.stringify(error.message);
+                  Alert.alert('Something went wrong',errorMessage)
+                  // ...
+                })
+              
+            
+
 
         }
      componentDidMount(){
@@ -57,7 +94,7 @@ class login extends React.Component {
         return (
             <KeyboardAvoidingView behavior="padding">
 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <ImageBackground source={require('./images/login2.jpg')}  style={styles.bgImage}>
+            <ImageBackground source={require('./images/space.jpg')}  style={styles.bgImage}>
            <TextInput
                 style={styles.input}
                 selectionColor={'#3d1767'}

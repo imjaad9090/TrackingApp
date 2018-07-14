@@ -13,7 +13,6 @@ class home extends Component {
     static navigationOptions =({navigation})=> ({
         title:'Custodian',
         headerMode:'float',
-        headerTransitionPreset:'cardStyle',
         headerStyle:{
             //elevation:0,
         backgroundColor: 'white',

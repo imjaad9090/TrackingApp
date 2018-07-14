@@ -157,6 +157,9 @@ android {
 
 
 dependencies {
+    compile project(':react-native-android-keyboard-adjust')
+    compile project(':react-native-background-task')
+    compile project(':react-native-fused-location')
     compile project(':react-native-image-crop-picker')
     //compile project(':react-native-device-info')
     //compile project(':react-native-geo-fencing')
@@ -172,12 +175,12 @@ dependencies {
     exclude group: 'com.google.android.gms', module: 'play-services-maps'
 
     }
-    compile 'com.google.firebase:firebase-core:11.2.0' //this decides your firebase SDK version
-    compile 'com.google.firebase:firebase-messaging:11.2.0'
+    compile 'com.google.firebase:firebase-core:11.6.0' //this decides your firebase SDK version
+    compile 'com.google.firebase:firebase-messaging:11.6.0'
 
-    compile "com.google.firebase:firebase-auth:11.2.0"
-    compile "com.google.firebase:firebase-database:11.2.0"
-    compile "com.google.firebase:firebase-storage:11.2.0"
+    compile "com.google.firebase:firebase-auth:11.6.0"
+    compile "com.google.firebase:firebase-database:11.6.0"
+    compile "com.google.firebase:firebase-storage:11.6.0"
 
 
     compile fileTree(dir: "libs", include: ["*.jar"])
@@ -191,10 +194,12 @@ dependencies {
     exclude group: 'com.google.android.gms', module: 'play-services-base'
     exclude group: 'com.google.android.gms', module: 'play-services-maps'
   }
-    compile ('com.google.android.gms:play-services-base:11.2.0'){
+    compile ('com.google.android.gms:play-services-base:11.6.0'){
         force  true
     }
-  compile ('com.google.android.gms:play-services-maps:11.2.0'){
+        compile 'com.google.android.gms:play-services-location:11.6.0'
+
+  compile ('com.google.android.gms:play-services-maps:11.6.0'){
       force  true
   }
       

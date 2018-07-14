@@ -3,14 +3,16 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet,FlatList,AsyncStorage,Alert,Button,TouchableOpacity,ScrollView } from 'react-native';
 import FAB from 'react-native-fab'
 import MapView, { AnimatedRegion,Circle, Animated,Marker } from 'react-native-maps';
-import st from './json/st';
-//import FusedLocation from 'react-native-fused-location';
+import st1 from './json/st1';
+import firebase from 'react-native-firebase';
 import Carousel from 'react-native-carousel';
 import circleToPolygon from 'circle-to-polygon';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'react-native-axios';
 import Spinner from 'react-native-spinkit';
 import PopupDialog, { SlideAnimation,DialogTitle,DialogButton } from 'react-native-popup-dialog';
+import FusedLocation,{getFusedLocation} from 'react-native-fused-location';
+import Modal from "react-native-modal";
 
   
 // create a component
@@ -38,14 +40,31 @@ constructor(){
            latitude: 0, longitude:0, description:'This is my address'
         },
     ],
-
+    locations:[
+        {
+            latitude:31.5093833,
+            longitude:74.3767967
+        },
+        {
+            latitude:31.4105767,
+            longitude:74.357855
+        },
+        {
+            latitude:31.5021417,
+            longitude:74.3655533
+        },
+        {
+            latitude:31.5013181,
+            longitude:74.3658232
+        }
+    ],
     locStore:[],
     coords:{
     latitude:31.497420,
     longitude:74.360123,
     },
 
-
+        people:[],
         region : {
             latitude:31.497420,
             longitude:74.360123,
@@ -58,19 +77,31 @@ constructor(){
   _showDialog = () => this.setState({ visble: true });
   _hideDialog = () => this.setState({ visble: false });
 
-componentDidMount(){
+    async componentDidMount(){
 
-    navigator.geolocation.getCurrentPosition(
-          
-        (position) => {
+    
+    FusedLocation.setLocationPriority(FusedLocation.Constants.BALANCED)
+    //FusedLocation.setLocationInterval(10000);
 
-            console.log(position)
-
-        },
-          (error) => console.log(error.message),
-         {enableHighAccuracy: false, timeout: 20000, accuracy:1000, maximumAge:20000}  
+     FusedLocation.startLocationUpdates();
        
-    );
+        const location = await FusedLocation.getFusedLocation();
+        this.setState({coords:{
+            latitude:location.latitude,
+            longitude:location.longitude
+        }})
+        
+           {/*var d = new Date();
+
+           firebase.database().ref('MyLocations').child(new Date()).set({latitude:location.latitude,longitude:location.longitude})
+            console.log(location);
+           */}
+         
+
+
+
+    //console.log(JSON.parse(update))
+
 
     let point ={
         lat : this.state.coords.latitude,
@@ -115,8 +146,44 @@ for(var i = 0; i < finalarea.length; i++){
 
 }
 
-
+//31.506532, 74.367931
 async componentWillMount(){
+
+
+    var id =  await AsyncStorage.getItem('MyID')
+
+
+
+    var show=[]
+    var userR = firebase.database().ref('Flocks/'+id).child('watchlist');
+    
+    userR.on("value", (snapshot)=>{
+        console.log(snapshot.val())
+        if(snapshot.val() != null ){
+        var semilist = Object.values(snapshot.val());
+            console.log(this.state.coords.latitude , this.state.coords.longitude)
+        if(semilist != null){
+            var quat = []
+            for(let i=0;i<semilist.length;i++){
+                firebase.database().ref('Flocks/'+semilist[i].props).child('location').on("value", snapshot => {
+                        quat.push(snapshot.val()) 
+                           
+                }
+
+            )
+
+        }
+        this.setState({markers:quat})
+
+
+    }
+}
+else {
+    alert('Looks like your watchlist is empty..')
+}
+    },  (errorObject)=> {
+        console.log("The read failed: " + errorObject.code);
+      });
 
     /*FusedLocation.setLocationPriority(FusedLocation.Constants.HIGH_ACCURACY);
  
@@ -186,7 +253,7 @@ async componentWillMount(){
         Mew.push({latitude: (parseFloat(mark[i].latitude)),longitude: (parseFloat(mark[i].longitude)), description:'This is my address'})
         
     }
-    this.setState({markers:Mew})
+    //this.setState({markers:Mew})
     this.setState({isVisible:false})
 
 
@@ -220,6 +287,7 @@ if (insiders.length>0) {
 
     
  async sendNotification(props){
+     
 let array = this.state.data
 
 var objIndex = array.findIndex((obj => obj.id === props));
@@ -233,6 +301,7 @@ this.setState({data:array})
     console.log(props)
 }
 
+    
 
     render() {
         return (
@@ -241,7 +310,7 @@ this.setState({data:array})
            <MapView
            showsUserLocation
            showsCompass={false}
-           customMapStyle={st}
+           //customMapStyle={st1}
            style={styles.map}
       region={this.state.region}
       //onRegionChange={this.onRegionChange}
