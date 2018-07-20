@@ -90,10 +90,15 @@ this.setState({ isModalVisible: !this.state.isModalVisible });
       firebase.database().ref("Flocks/"+this.state.myID).child('watchlist').on("value", (snapshot)=> {
         
         console.log(snapshot.val())
-        let semilist = Object.values(snapshot.val());
-        console.log(semilist)
+
         
-        if(semilist != null){
+        if(snapshot.val() != null )
+        {
+            let semilist = Object.values(snapshot.val());
+        console.log(semilist)
+            
+            
+            if(semilist != null){
             var quat = []
             for(let i=0;i<semilist.length;i++){
                 firebase.database().ref('Flocks/'+semilist[i].props).on("value", snapshot => {
@@ -108,6 +113,11 @@ this.setState({ isModalVisible: !this.state.isModalVisible });
 
 
     }
+}
+else {
+    console.log('All records empty')
+    this.setState({watchlist:[],showlist:true})
+}
         
     })
         
@@ -204,7 +214,7 @@ this.setState({ isModalVisible: !this.state.isModalVisible });
     addToList(props){
         firebase.database().ref("Flocks/"+this.state.myID).child('watchlist').once("value",snapshot => {
             
-            
+            console.log(snapshot.numChildren())
             if(snapshot.numChildren() <3){
             
             const userData = snapshot.val();
@@ -235,9 +245,54 @@ else {
     }
 
     removeList(props){
-        console.log(props)
-        //firebase.database().ref("Flocks/"+this.state.myID).child('watchlist').orderByChild('props').equalTo(props).remove()
         
+        console.log(props)
+        firebase.database().ref("Flocks/"+this.state.myID).child('watchlist').orderByChild('props').equalTo(props).on('child_added',(snapshot)=>{
+        console.log(snapshot.val())
+        console.log(snapshot.key)
+
+        //var toRemove = (snapshot.key)
+
+        //firebase.database().ref().child("Flocks/"+this.state.myID).child('watchlist').child(toRemove).remove()
+
+
+        
+            {/*
+            firebase.database().ref().child("Flocks/"+this.state.myID).child('watchlist').on("value", snapshot=> {
+            var count =  Object.values(snapshot.val())   
+          console.log(count.length , toRemove)
+          
+            
+          
+          
+        })*/}
+
+
+            {/*firebase.database().ref("Flocks/"+this.state.myID).once('value', (snapshot)=> {
+                if (snapshot.hasChild('watchlist')) {
+                  console.log('child location exists');
+                }
+                else {
+                    firebase.database().ref("Flocks/"+this.state.myID).push({watchlist:0})
+
+                }
+              });*/}
+
+
+
+
+
+
+            
+
+
+
+                
+              
+
+
+        })
+        console.log('fe')
     }
 
     render() {

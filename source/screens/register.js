@@ -46,9 +46,14 @@ class register extends React.Component {
  
     // Get location once.
     const location = await FusedLocation.getFusedLocation();
+
+    if(location != null ){
     this.setState({latitude:(location.latitude),longitude:(location.longitude)})
         console.log(this.state)
-    
+    }
+    else {
+        this.setState({latitude:0.200,longitude:0.400})
+    }
     }
         
  
@@ -78,7 +83,8 @@ class register extends React.Component {
     image:"https://firebasestorage.googleapis.com/v0/b/trackingapp-2fd66.appspot.com/o/sheep.png?alt=media&token=6af127ed-5344-46fa-b6e2-d5816c453731",
     online: false,
     location:{latitude:this.state.latitude,longitude:this.state.longitude,latitudeDelta:0.0922,longitudeDelta:0.0421},
-    watchlist:0
+    watchlist:0,
+    subscribed:false
 }).then(async function() {
 
     var user = firebase.auth().currentUser;

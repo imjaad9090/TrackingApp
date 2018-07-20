@@ -8,8 +8,10 @@ import Contacts from 'react-native-contacts';
 import Ripple from 'react-native-material-ripple';
 import FCM, {presentLocalNotification} from "react-native-fcm";
 import {FCMEvent} from 'react-native-fcm';
+import FusedLocation,{getFusedLocation} from 'react-native-fused-location';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
-import axios from 'react-native-axios';
+import BackgroundTask from 'react-native-background-task'
+import queueFactory from 'react-native-queue';import axios from 'react-native-axios';
 import Permissions from 'react-native-permissions'
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
 function calcCrow(lat1, lon1, lat2, lon2) 
@@ -36,7 +38,23 @@ function calcCrow(lat1, lon1, lat2, lon2)
 
     
 
-
+    BackgroundTask.define(async () => {
+  
+        // Init queue
+        axios({
+          method: 'put',
+          url: 'https://trackingapp-2fd66.firebaseio.com/Locations/coords/2.json',
+          data: {
+            latitude: JSON.stringify(new Date()),
+          }
+        });
+        // Register job worker
+        // Run queue for at most 25 seconds.
+      
+        // finish() must be called before OS hits timeout.
+        BackgroundTask.finish();
+      
+      });
 
 // create a component
 class home extends Component {
@@ -124,7 +142,34 @@ else {
 
 
 
-checkStatus(){
+     checkStatus(){
+    
+    FusedLocation.getFusedLocation().then((location)=>{
+
+        var lats = location.latitude
+      var long = location.longitude
+
+        if (lats != null && long != null){
+            axios({
+                method: 'put',
+                url: 'https://trackingapp-2fd66.firebaseio.com/Flocks/'+ this.state.myid +'/location.json',
+                data: {
+                  latitude: lats,
+                  longitude: long,
+                  latitudeDelta : 0.0922,
+                  longitudeDelta : 0.0421
+                }
+              });
+        }
+    }
+).catch((error)=>{
+    console.log(error)
+})
+      //console.log(location)
+      
+
+
+
     axios.get('https://trackingapp-2fd66.firebaseio.com/Flocks.json').then(response=>{
         console.log(response)
             var result = Object.values(response.data)
@@ -223,8 +268,11 @@ async getclosecount(){
    async componentDidMount(){
     //StatusBar.setHidden(true);
  
-          
+    BackgroundTask.schedule(); // Schedule the task to run every ~15 min if app is closed.
 
+    FusedLocation.setLocationPriority(FusedLocation.Constants.BALANCED)
+    FusedLocation.startLocationUpdates();
+       
 
     setTimeout(() => { 
     LocationServicesDialogBox.checkLocationServicesIsEnabled({
@@ -249,7 +297,7 @@ async getclosecount(){
 
     this.interval = setInterval(() => {
         this.checkStatus()
-}, 300000);
+}, 180000);
 
 
 

@@ -37,6 +37,7 @@
     "react-native-paper": "^1.2.4",
     "react-native-permissions": "^1.1.1",
     "react-native-popup-dialog": "^0.11.46",
+    "react-native-queue": "^1.2.1",
     "react-native-select-multiple": "^1.2.0",
     "react-native-simple-contacts": "^1.0.2",
     "react-native-spinkit": "^1.1.1",

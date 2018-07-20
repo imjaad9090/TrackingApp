@@ -5,6 +5,7 @@ import android.app.Application;
 import com.showlocationservicesdialogbox.LocationServicesDialogBoxPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactApplication;
+import io.realm.react.RealmReactPackage;
 import com.marianhello.bgloc.react.BackgroundGeolocationPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 //import com.marianhello.bgloc.react.BackgroundGeolocationPackage;
@@ -46,6 +47,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RealmReactPackage(),
             new BackgroundGeolocationPackage(),
             new LinearGradientPackage(),
             new LocationServicesDialogBoxPackage(),
