@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import {View, StyleSheet,ScrollView,Image,Text,FlatList,Platform,AsyncStorage,KeyboardAvoidingView,TouchableOpacity,ActivityIndicator,TextInput} from 'react-native';
+import {View, StyleSheet,ScrollView,Image,Text,FlatList,Platform,AsyncStorage,KeyboardAvoidingView,TouchableOpacity,ActivityIndicator,TextInput,Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Container, Header, Content, List,Button, Separator,ListItem,H3,H2,Left, Body, Right, Switch } from 'native-base';
 import MapView, { AnimatedRegion,Circle, Animated,Marker } from 'react-native-maps';
@@ -89,7 +89,7 @@ this.setState({ isModalVisible: !this.state.isModalVisible });
       })
       firebase.database().ref("Flocks/"+this.state.myID).child('watchlist').on("value", (snapshot)=> {
         
-            
+        console.log(snapshot.val())
         let semilist = Object.values(snapshot.val());
         console.log(semilist)
         
@@ -203,6 +203,10 @@ this.setState({ isModalVisible: !this.state.isModalVisible });
 
     addToList(props){
         firebase.database().ref("Flocks/"+this.state.myID).child('watchlist').once("value",snapshot => {
+            
+            
+            if(snapshot.numChildren() <3){
+            
             const userData = snapshot.val();
             if (userData){
               console.log("exists!");
@@ -215,7 +219,10 @@ this.setState({ isModalVisible: !this.state.isModalVisible });
                 firebase.database().ref('Flocks/'+this.state.myID).child('watchlist').push({props});
                 this.setState({searchview:false,searchres:false,key:Math.random()})
             }
-
+}
+else {
+    Alert.alert('Subscribe','Please subscribe for more, send your desired members to "richtech@mail.pk", once you are allowed you can add more people.')
+}
             
         });
     }
@@ -225,6 +232,12 @@ this.setState({ isModalVisible: !this.state.isModalVisible });
         console.log(props)
         this.setState({region:props})
         this._toggleModal()
+    }
+
+    removeList(props){
+        console.log(props)
+        //firebase.database().ref("Flocks/"+this.state.myID).child('watchlist').orderByChild('props').equalTo(props).remove()
+        
     }
 
     render() {
@@ -283,6 +296,7 @@ this.setState({ isModalVisible: !this.state.isModalVisible });
                 <View style={{marginHorizontal:3,right:0}}>
                     <Icon name="add-circle" size={28} onPress={()=>this.addToList(item.searchid)} color="#0F3057"  />
                 </View>
+                
 
                 </View>
                     
@@ -341,6 +355,9 @@ this.setState({ isModalVisible: !this.state.isModalVisible });
             <Image style={{width:30,height:30,borderRadius:15,marginHorizontal:10}} source={{uri:item.image}} resizeMode="contain" />
             <View style={{marginHorizontal:3,top:0}}>
                     <Icon name="person-pin-circle" size={30} onPress={()=>this.showModal(item.location)} color="#27ae60"  />
+                </View>
+                <View style={{marginHorizontal:3,right:0}}>
+                    <Icon name="remove-circle" size={28} onPress={()=>this.removeList(item.custodianID)} color="#faa"  />
                 </View>
             <View style={{alignSelf:"center",marginHorizontal:10}}>
              <Text style={{fontSize:13,fontWeight:'500'}}>{item.name}</Text>

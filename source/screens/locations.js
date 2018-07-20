@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,FlatList,AsyncStorage,Alert,Button,TouchableOpacity,ScrollView } from 'react-native';
 import FAB from 'react-native-fab'
-import MapView, { AnimatedRegion,Circle, Animated,Marker } from 'react-native-maps';
+import MapView, { AnimatedRegion,Circle,Callout, Animated,Marker } from 'react-native-maps';
 import st1 from './json/st1';
 import firebase from 'react-native-firebase';
 import Carousel from 'react-native-carousel';
@@ -32,6 +32,7 @@ constructor(){
     this.popupAnimation = new SlideAnimation({ slideFrom: "bottom" });
     
     this.state={
+        places:[],
         index:0,
         data:[{name:'Loading.',value:'Loading..'}],
         visible: false,
@@ -130,7 +131,7 @@ const polygon = [
   
 
 
-for(var i = 0; i < finalarea.length; i++){
+    for(var i = 0; i < finalarea.length; i++){
     for(var j = 0; j < finalarea[i].length; j++){
 
         //console.log(finalarea[i][1]);
@@ -163,27 +164,29 @@ async componentWillMount(){
         var semilist = Object.values(snapshot.val());
             console.log(this.state.coords.latitude , this.state.coords.longitude)
         if(semilist != null){
-            var quat = []
+           var quat=[];
             for(let i=0;i<semilist.length;i++){
                 firebase.database().ref('Flocks/'+semilist[i].props).child('location').on("value", snapshot => {
-                        quat.push(snapshot.val()) 
-                           
-                }
+                 quat.push(snapshot.val()) 
+                          
+                }) }
 
-            )
-
-        }
-        this.setState({markers:quat})
+    this.setState({markers:quat})
+        
 
 
     }
+    console.log(quat)
+    
+    
 }
-else {
+    else {
     alert('Looks like your watchlist is empty..')
-}
+    }
     },  (errorObject)=> {
         console.log("The read failed: " + errorObject.code);
       });
+
 
     /*FusedLocation.setLocationPriority(FusedLocation.Constants.HIGH_ACCURACY);
  
@@ -253,7 +256,8 @@ else {
         Mew.push({latitude: (parseFloat(mark[i].latitude)),longitude: (parseFloat(mark[i].longitude)), description:'This is my address'})
         
     }
-    //this.setState({markers:Mew})
+//this.setState({markers:Mew})
+
     this.setState({isVisible:false})
 
 
@@ -268,10 +272,10 @@ for (let i = 0; i < mark.length; i++) {
 }
 
 this.setState({count:insiders.length,data:insiders})
-if (insiders.length>0) {
+{/*if (insiders.length>0) {
     this.popupDialog.show()
 
-}
+}*/}
     
     console.log(insiders)
     
@@ -279,7 +283,7 @@ if (insiders.length>0) {
   .catch((error) =>{
     console.log(error);
   });
-    
+ 
 
     
 }
@@ -312,20 +316,21 @@ this.setState({data:array})
            showsCompass={false}
            //customMapStyle={st1}
            style={styles.map}
-      region={this.state.region}
+         region={this.state.region}
       //onRegionChange={this.onRegionChange}
->
+        >
 
-
-{this.state.markers.map((marker,i) => (
-    <Marker
-      key={i}
-      coordinate={marker}
-      image={require('./images/mapin.png')}
-      title={marker.description}
-    />
-  ))}
-
+        
+        {this.state.markers.map((marker,i) => (
+            
+            
+            <Marker
+              key={i}
+              coordinate={marker}
+              image={require('./images/mapin.png')}
+              //title={marker.description}
+            />
+          ))}
 <Circle
     center={this.state.coords}
     radius={1000}
@@ -334,7 +339,7 @@ this.setState({data:array})
     /></MapView>
 
 
-
+{/*
 <View>
 <PopupDialog
 width={300}
@@ -385,15 +390,15 @@ overlayOpacity={0.0}
   </PopupDialog>
 
 </View>
-
+*/}
 
 <View style={{alignSelf:'center',top:5,marginHorizontal:10}}>
  <Spinner  isVisible={this.state.isVisible} size={40} type={'Wave'} color="#d63031"/>
  </View>
            </View>   
-           <View style={{position:'absolute',bottom:7,right:0}}>
+           {/*<View style={{position:'absolute',bottom:7,right:0}}>
             <FAB buttonColor="#40c4ff" iconTextColor="#FFFFFF" onClickAction={()=>this.popupDialog.show()} visible={true} iconTextComponent={<Icon name="map-marker"/>} />
-            </View>
+</View>*/}
              </View>
         );
     }

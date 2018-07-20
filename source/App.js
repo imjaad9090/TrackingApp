@@ -27,7 +27,7 @@ import web from './screens/web';
 
 import register from './screens/register';
 import maptest from './screens/maptest';
-import { fadeIn } from 'react-navigation-transitions';
+import { fadeIn,fromLeft,fromRight,fromTop } from 'react-navigation-transitions';
 
 
 
@@ -70,6 +70,8 @@ const Go = StackNavigator({
   Login : {screen : login},
   Register : {screen : register},
   
+  },{
+    transitionConfig: () => fromTop(300),
   })
 
 

@@ -1,3 +1,4 @@
+
 buildscript {
     repositories {
         google()
@@ -36,8 +37,19 @@ allprojects {
 }
 
 ext {
+    compileSdkVersion = 26
+    targetSdkVersion = 22   
+    buildToolsVersion = "26.0.2"
+    //supportLibVersion = "27.1.0"
+    googlePlayServicesVersion = "11.2.0"
+    gradle3EXPERIMENTAL = "yes"
+}
+
+/*
+ext {
     compileSdkVersion   = 26
     targetSdkVersion    = 25
     buildToolsVersion   = "26.0.2"
     googlePlayServicesVersion = "11.2.0"
-}
+    
+}*/

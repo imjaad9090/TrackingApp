@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import axios from 'react-native-axios';
 import firebase from 'react-native-firebase';
 import FusedLocation from 'react-native-fused-location';
+import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
+
 // create a component
 class register extends React.Component {
     static navigationOptions = {
@@ -19,13 +21,28 @@ class register extends React.Component {
             email:'',
             password:'',
             username:'',
+            latitude:31.501229,
+            longitude:74.3656
             
         }
     }
 
     async componentWillMount(){
-        Alert.alert('We need current location','Please turn on location services i.e GPS')
-       FusedLocation.setLocationPriority(FusedLocation.Constants.HIGH_ACCURACY);
+        LocationServicesDialogBox.checkLocationServicesIsEnabled({
+            message: "<p>To continue, turn on device location, which uses Google's location service</p>",
+            ok: "YES",
+            cancel: "NO",
+            enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => GPS OR NETWORK PROVIDER
+            showDialog: true, // false => Opens the Location access page directly
+            openLocationServices: true, // false => Directly catch method is called if location services are turned off
+            preventOutSideTouch: false, // true => To prevent the location services window from closing when it is clicked outside
+            preventBackClick: false, // true => To prevent the location services popup from closing when it is clicked back button
+            providerListener: false // true ==> Trigger locationProviderStatusChange listener when the location state changes
+        }).then(function(success) {
+            console.log(success); // success => {alreadyEnabled: false, enabled: true, status: "enabled"}
+        }).catch((error) => {
+            console.log(error.message); // error.message => "disabled"
+        });       FusedLocation.setLocationPriority(FusedLocation.Constants.HIGH_ACCURACY);
  
     // Get location once.
     const location = await FusedLocation.getFusedLocation();
@@ -47,11 +64,12 @@ class register extends React.Component {
         {
             firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(() => {
+            console.log(this.state.latitude,this.state.longitude)
             var user = firebase.auth().currentUser;
             var CustID =  'C'+Math.floor((Math.random() * 1000000000) + 100)
              AsyncStorage.setItem('MyID', CustID);
         console.log('successfuly created new child')
-firebase.database().ref().child('Flocks').child(CustID).set({
+    firebase.database().ref().child('Flocks').child(CustID).set({
     email: email,
     watching: 0,
     userid: user.uid,
@@ -59,7 +77,7 @@ firebase.database().ref().child('Flocks').child(CustID).set({
     name: username,
     image:"https://firebasestorage.googleapis.com/v0/b/trackingapp-2fd66.appspot.com/o/sheep.png?alt=media&token=6af127ed-5344-46fa-b6e2-d5816c453731",
     online: false,
-    location:{latitude:this.state.latitude,longitude:this.state.longitude},
+    location:{latitude:this.state.latitude,longitude:this.state.longitude,latitudeDelta:0.0922,longitudeDelta:0.0421},
     watchlist:0
 }).then(async function() {
 
@@ -111,9 +129,11 @@ else {
         return (
             <KeyboardAvoidingView behavior="padding">
 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <ImageBackground source={require('./images/login2.jpg')}  style={styles.bgImage}>
+            <ImageBackground source={require('./images/space.jpg')}  style={styles.bgImage}>
            
            
+            <Text style={{alignSelf:'center',marginVertical:20,color:'white',fontWeight:'500',letterSpacing:3,fontSize:40}}>Custodian</Text>
+
             <TextInput
                 style={styles.input}
                 selectionColor={'#3d1767'}
@@ -172,11 +192,11 @@ else {
 
 />
 
-            <TouchableOpacity activeOpacity={0.8} onPress={()=>this.register()} style={{backgroundColor:'white',borderRadius:19,width:'75%',height:40,alignItems:'center',justifyContent:'center',marginVertical:10,borderWidth:2,borderColor:'rgba(0, 22, 0, 0.5)'}}>
+            <TouchableOpacity activeOpacity={1.0} onPress={()=>this.register()} style={{backgroundColor:'white',borderRadius:19,width:'75%',height:40,alignItems:'center',justifyContent:'center',marginVertical:10,borderWidth:2,borderColor:'rgba(0, 22, 0, 0.5)'}}>
                 <Text style={{fontWeight:"700",fontSize:15,includeFontPadding:true,color:'#2c3e50'}}>REGISTER</Text>
             </TouchableOpacity>
 
-<TouchableOpacity activeOpacity={0.8} onPress={()=>this.props.navigation.pop()} style={{backgroundColor:'white',borderRadius:19,width:'75%',height:40,alignItems:'center',justifyContent:'center',borderWidth:2,borderColor:'rgba(0, 22, 0, 0.5)'}}>
+<TouchableOpacity activeOpacity={1.0} onPress={()=>this.props.navigation.pop()} style={{backgroundColor:'white',borderRadius:19,width:'75%',height:40,alignItems:'center',justifyContent:'center',borderWidth:2,borderColor:'rgba(0, 22, 0, 0.5)'}}>
                 <Text style={{fontWeight:"700",fontSize:15,includeFontPadding:true,color:'#2c3e50'}}>LOGIN</Text>
             </TouchableOpacity>
             

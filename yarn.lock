@@ -2013,7 +2013,7 @@ fbjs-scripts@^0.8.1:
     semver "^5.1.0"
     through2 "^2.0.0"
 
-fbjs@^0.8.0, fbjs@^0.8.14, fbjs@^0.8.16, fbjs@^0.8.4, fbjs@^0.8.9:
+fbjs@^0.8.0, fbjs@^0.8.14, fbjs@^0.8.16, fbjs@^0.8.9:
   version "0.8.16"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
   dependencies:
@@ -3398,10 +3398,6 @@ lodash.keys@^3.0.0:
     lodash.isarguments "^3.0.0"
     lodash.isarray "^3.0.0"
 
-lodash.merge@4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.0.tgz#69884ba144ac33fe699737a6086deffadd0f89c5"
-
 lodash.pad@^4.1.0:
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/lodash.pad/-/lodash.pad-4.5.1.tgz#4330949a833a7c8da22cc20f6a26c4d59debba70"
@@ -4219,6 +4215,10 @@ posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
 
+postinstall-build@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/postinstall-build/-/postinstall-build-5.0.1.tgz#b917a9079b26178d9a24af5a5cd8cb4a991d11b9"
+
 prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
@@ -4342,13 +4342,6 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-addons-shallow-compare@15.6.2:
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.6.2.tgz#198a00b91fc37623db64a28fd17b596ba362702f"
-  dependencies:
-    fbjs "^0.8.4"
-    object-assign "^4.1.0"
-
 react-clone-referenced-element@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-clone-referenced-element/-/react-clone-referenced-element-1.0.1.tgz#2bba8c69404c5e4a944398600bcc4c941f860682"
@@ -4368,13 +4361,19 @@ react-lifecycles-compat@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-1.0.2.tgz#551d8b1d156346e5fcf30ffac9b32ce3f78b8850"
 
-react-native-android-contactpicker@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/react-native-android-contactpicker/-/react-native-android-contactpicker-0.4.0.tgz#edf238864bbf6fbe12e19739a7c009cc1af11365"
+react-native-android-keyboard-adjust@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-android-keyboard-adjust/-/react-native-android-keyboard-adjust-1.1.1.tgz#ea8062279bb424fad467903c7a348bdc5e583273"
 
 react-native-animatable@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.2.4.tgz#b5fb7657e8f6edadbc26697057a327fb920b3039"
+  dependencies:
+    prop-types "^15.5.10"
+
+react-native-animatable@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.0.tgz#b5c3940fc758cfd9b2fe54613a457c4b6962b46e"
   dependencies:
     prop-types "^15.5.10"
 
@@ -4383,6 +4382,10 @@ react-native-axios@^0.17.1:
   resolved "https://registry.yarnpkg.com/react-native-axios/-/react-native-axios-0.17.1.tgz#44292950aa07ceee2e4bd349106ff773bef81f8f"
   dependencies:
     follow-redirects "0.0.7"
+
+react-native-background-task@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-background-task/-/react-native-background-task-0.2.1.tgz#9d110ed14b245e0d8b9ec8114ce24b33ddda65de"
 
 react-native-carousel@^0.11.0:
   version "0.11.0"
@@ -4397,6 +4400,10 @@ react-native-communications@^2.2.1:
 react-native-contacts@^2.1.2:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-2.1.3.tgz#743b44a4b8aa84845943953783fac23d4732960c"
+
+react-native-device-uuid@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-device-uuid/-/react-native-device-uuid-1.2.0.tgz#5d021b2640f5619b1b406a502636682f061a8bd4"
 
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
@@ -4442,17 +4449,29 @@ react-native-fab@^1.0.6:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-fcm@^14.1.3:
+  version "14.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-fcm/-/react-native-fcm-14.2.1.tgz#236370d54c0a2a8b5e32d9df204e3be7907065f0"
+
+react-native-firebase@^4.3.4:
+  version "4.3.7"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-4.3.7.tgz#3f8323f22a3a4286797f2424800b58df5aaedbb7"
+  dependencies:
+    opencollective "^1.0.3"
+    postinstall-build "^5.0.1"
+    prop-types "^15.6.1"
+
 react-native-fused-location@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/react-native-fused-location/-/react-native-fused-location-0.2.1.tgz#e80876bf9182d6c078cd48323d746954a77d6b46"
 
-react-native-geo-fencing@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-geo-fencing/-/react-native-geo-fencing-0.1.0.tgz#0a04c2cdff9ff6d0091fbea89690fda7310be550"
-
 react-native-icon-badge@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/react-native-icon-badge/-/react-native-icon-badge-1.1.3.tgz#43de0c923afe4968dfcff127ec5c57057b16f787"
+
+react-native-image-crop-picker@^0.20.3:
+  version "0.20.3"
+  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.20.3.tgz#565d69c1764e96abef23871fe4d6d58b1ee35e18"
 
 react-native-indicators@^0.12.0:
   version "0.12.0"
@@ -4477,6 +4496,16 @@ react-native-maps@^0.20.1:
   dependencies:
     babel-plugin-module-resolver "^2.3.0"
     babel-preset-react-native "1.9.0"
+
+react-native-material-ripple@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-material-ripple/-/react-native-material-ripple-0.8.0.tgz#b8c24e6fdea2af2a21e8468b1f40b35483019e2f"
+  dependencies:
+    prop-types "^15.5.10"
+
+react-native-mauron85-background-geolocation@^0.5.0-alpha.35:
+  version "0.5.0-alpha.35"
+  resolved "https://registry.yarnpkg.com/react-native-mauron85-background-geolocation/-/react-native-mauron85-background-geolocation-0.5.0-alpha.35.tgz#8871415a145e340328a63dfa0b2846922cf70896"
 
 react-native-modal@^5.2.0:
   version "5.4.0"
@@ -4520,19 +4549,6 @@ react-native-select-multiple@^1.2.0:
 react-native-simple-contacts@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-simple-contacts/-/react-native-simple-contacts-1.0.2.tgz#7ba4a052d2e8f10f73234bd890a7f8c51cb9c591"
-
-react-native-simple-store@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-simple-store/-/react-native-simple-store-1.3.0.tgz#84953a7b007b8e3c50ec768478e98dc3636ef092"
-  dependencies:
-    lodash.merge "4.6.0"
-
-react-native-snap-carousel@^3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-snap-carousel/-/react-native-snap-carousel-3.6.0.tgz#bbd4c988314500af4a695f787f592fdfcd5c3df1"
-  dependencies:
-    prop-types "^15.6.0"
-    react-addons-shallow-compare "15.6.2"
 
 react-native-spinkit@^1.1.1:
   version "1.1.1"
@@ -4620,6 +4636,10 @@ react-native@0.53.0:
     xcode "^0.9.1"
     xmldoc "^0.4.0"
     yargs "^9.0.0"
+
+react-navigation-transitions@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-navigation-transitions/-/react-navigation-transitions-1.0.4.tgz#c812501e2928eab41cd16da9a4b3d91582c64c08"
 
 react-navigation@^1.5.8:
   version "1.5.8"

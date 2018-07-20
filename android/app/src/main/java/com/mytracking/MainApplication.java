@@ -2,7 +2,12 @@ package com.mytracking;
 
 import android.app.Application;
 //import com.surialabs.rn.geofencing.GeoFencingPackage;
+import com.showlocationservicesdialogbox.LocationServicesDialogBoxPackage;
+import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactApplication;
+import com.marianhello.bgloc.react.BackgroundGeolocationPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+//import com.marianhello.bgloc.react.BackgroundGeolocationPackage;
 import net.zubricky.AndroidKeyboardAdjust.AndroidKeyboardAdjustPackage;
 import com.jamesisaac.rnbackgroundtask.BackgroundTaskPackage;
 import com.mustansirzia.fused.FusedLocationPackage;
@@ -41,6 +46,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new BackgroundGeolocationPackage(),
+            new LinearGradientPackage(),
+            new LocationServicesDialogBoxPackage(),
             new AndroidKeyboardAdjustPackage(),
             new BackgroundTaskPackage(),
             new FusedLocationPackage(),
