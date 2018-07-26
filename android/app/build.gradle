@@ -170,9 +170,7 @@ dependencies {
     compile project(':react-native-contacts')
     compile project(':react-native-vector-icons')
     compile project(':react-native-simple-contacts')
-    
-  
-       compile project(':react-native-android-location-services-dialog-box')
+    compile project(':react-native-android-location-services-dialog-box')
 
     compile (project(':react-native-fcm')){
     exclude group: 'com.google.android.gms', module: 'play-services-base'

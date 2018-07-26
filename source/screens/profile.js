@@ -212,7 +212,7 @@ else {
     }
 
     addToList(props){
-        firebase.database().ref("Flocks/"+this.state.myID).child('watchlist').once("value",snapshot => {
+        firebase.database().ref("Flocks/"+this.state.myID).child('watchlist').on("value",snapshot => {
             
             console.log(snapshot.numChildren())
             if(snapshot.numChildren() <3){
@@ -411,9 +411,9 @@ else {
             <View style={{marginHorizontal:3,top:0}}>
                     <Icon name="person-pin-circle" size={30} onPress={()=>this.showModal(item.location)} color="#27ae60"  />
                 </View>
-                <View style={{marginHorizontal:3,right:0}}>
+                {/*<View style={{marginHorizontal:3,right:0}}>
                     <Icon name="remove-circle" size={28} onPress={()=>this.removeList(item.custodianID)} color="#faa"  />
-                </View>
+            </View>*/}
             <View style={{alignSelf:"center",marginHorizontal:10}}>
              <Text style={{fontSize:13,fontWeight:'500'}}>{item.name}</Text>
             <Text style={{fontSize:12}}>{JSON.stringify(item.online)}</Text>

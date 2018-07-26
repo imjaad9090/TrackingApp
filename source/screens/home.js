@@ -11,7 +11,8 @@ import {FCMEvent} from 'react-native-fcm';
 import FusedLocation,{getFusedLocation} from 'react-native-fused-location';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 import BackgroundTask from 'react-native-background-task'
-import queueFactory from 'react-native-queue';import axios from 'react-native-axios';
+import queueFactory from 'react-native-queue';
+import axios from 'react-native-axios';
 import Permissions from 'react-native-permissions'
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
 function calcCrow(lat1, lon1, lat2, lon2) 
@@ -45,7 +46,7 @@ function calcCrow(lat1, lon1, lat2, lon2)
           method: 'put',
           url: 'https://trackingapp-2fd66.firebaseio.com/Locations/coords/2.json',
           data: {
-            latitude: JSON.stringify(new Date()),
+            latitude: 'sweet',
           }
         });
         // Register job worker
@@ -513,6 +514,8 @@ async getclosecount(){
     />
 </Ripple>
 </TouchableOpacity>
+
+
 
 
 <TouchableOpacity activeOpacity={1.0} style={{backgroundColor:'white',elevation:3,shadowOpacity:0.6}} >
